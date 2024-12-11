@@ -1,0 +1,80 @@
+package view;
+
+import controller.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class TelaDeLoginView extends JFrame {
+    public static JLabel lblLogin;
+    public static JTextField txtLogin;
+    public static JLabel lblSenha;
+    public static JPasswordField txtSenha;
+    public static JButton btnLogar;
+    public static JLabel lblNotificacoes;
+
+    public static GridBagLayout gbLayout;
+    public static GridBagConstraints gbConstraints;
+
+    public TelaDeLoginView() {
+        super("Tela de Login");
+        gbLayout = new GridBagLayout();
+        setLayout(gbLayout);
+        gbConstraints = new GridBagConstraints();
+
+        lblLogin = new JLabel("Login:");
+        InterfaceView.addComponent(lblLogin, 0, 0, 1, 1, gbLayout, gbConstraints, this);
+
+        txtLogin = new JTextField(10);
+        InterfaceView.addComponent(txtLogin, 0, 1, 1, 1, gbLayout, gbConstraints, this);
+
+        lblSenha = new JLabel("Senha:");
+        InterfaceView.addComponent(lblSenha, 1, 0, 1, 1, gbLayout, gbConstraints, this);
+
+        txtSenha = new JPasswordField(10);
+        InterfaceView.addComponent(txtSenha, 1, 1, 1, 1, gbLayout, gbConstraints, this);
+
+        btnLogar = new JButton("Logar");
+        InterfaceView.addComponent(btnLogar, 2, 0, 2, 1, gbLayout, gbConstraints, this);
+
+        lblNotificacoes = new JLabel("Notificações", SwingConstants.CENTER);
+        // lblNotificacoes.setSize(getContentPane().getWidth(), 40);
+        InterfaceView.addComponent(lblNotificacoes, 3, 0, 2, 1, gbLayout, gbConstraints, this);
+
+        ButtonHandler buttonHandler = new ButtonHandler();
+        btnLogar.addActionListener(buttonHandler);
+
+        txtSenha.addKeyListener(
+            new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    if (String.valueOf(txtSenha.getPassword()).trim().length() > 0) {
+                        if (e.getKeyCode() == 10) {
+                            TelaDeLoginController.logarController();
+                        }
+                    }
+                }
+            }
+        );
+
+        InterfaceView.definirIcone(this);
+        setSize(300,300);
+        InterfaceView.setFrameCenterPosition(this);
+        setVisible(true);
+    }
+
+    private class ButtonHandler implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            TelaDeLoginController.logarController();
+        }
+    }
+
+    public static TelaDeLoginView appTelaDeLoginView;
+    public static void main(String[] args) {
+        appTelaDeLoginView = new TelaDeLoginView();
+        appTelaDeLoginView.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        // InterfaceView.verificarLarguraEAltura(appTelaDeAtualizacaoView,lblNotificacoes);
+    }
+}
